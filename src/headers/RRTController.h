@@ -9,7 +9,7 @@
 class RRTController {
 
 	protected:
-		std::queue qu;
+		std::queue<Node> qu;
 	public:
 		RRTController(ConfigurationSpace space, int sampleSize=8, double radius=3, double rate=0.3);
 		~RRTController();

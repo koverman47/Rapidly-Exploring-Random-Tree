@@ -10,9 +10,10 @@
 class BRRTC : public RRTController {
 
 	private:
+		Node point;
 		Node destination;
-		double distance(vector<double> a, vector<double> b); // Euclidean
-		int min(vector<double> a);
+		double distance(Node u, Node v); // Euclidean
+		int min(vector<Node> toMin);
 	public:
 		BRRTC();
 		~BRRTC();

@@ -24,6 +24,35 @@ void BRRTC::sample() {
 	}
 }
 
+
+void BRRTC::sample() {
+	bool isValid = true;
+	vector<double> distanceList;
+	vector<Node> sampleList;
+
+	for(int s = 0; s < samples; s++) {
+		x = radius * cos(sampleRatio * s) + point.getX();
+		y = radius * sin(sampleRatio * s) + point.getY();
+
+		if(space.isValidPoiint(point.getX(), point.getY(), x, y)) {
+			Node n = new Node(x, y);
+			sampleList.push_back(n);
+			distanceList.push_back(distance(n, destination));
+		}
+		else {
+			isValid = false;
+		}
+	}
+	point = sampleList[min(distanceList)];
+	if(isValid) {
+		radius += radius * rate;
+	}
+	else {
+		radius *= radius * rate;
+	}
+}
+
+
 double BRRTC::distance(vector<double> a, vector<double> b) {
 	double sum = 0;
 	for(int i = 0; i < a.size(); i++) { // Assuming a, b are the same size
@@ -33,10 +62,10 @@ double BRRTC::distance(vector<double> a, vector<double> b) {
 }
 
 // Useless because we can keep track as we calculate the distances
-int BBRTC::min(vector<double> a) {
+int BBRTC::min(vector<double> toMin) {
 	int index = 0;
-	for(int i = 1; i < a.size(); i++) {
-		if(a[index] < a[i]) {
+	for(int i = 1; i < toMin.size(); i++) {
+		if(toMin[index] < toMin[i]) {
 			index = i;
 		}
 	}

@@ -7,20 +7,13 @@ Edge::Edge(Node s, Node t) {
 }
 
 
-double Edge::getStartX() {
-	return this->source.getX();
+Node Edge::getStart() {
+	return source;
 }
 
-double Edge::getEndX() {
-	return this->sink.getX();
-}
 
-double Edge::getStartY() {
-	return this->source.getY();
-}
-
-double Edge::getEndY() {
-	return this->sink.getY();
+Node Edge::getEnd() {
+	return sink;
 }
 
 Edge::~Edge() {}

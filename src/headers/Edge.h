@@ -13,11 +13,8 @@ class Edge {
 		Edge(Node s, Node t);
 		~Edge();
 
-		// I am going about it this way because c++ tuples are awful to look at
-		double getStartX();
-		double getEndX();
-		double getStartY();
-		double getEndY();
+		Node getStart();
+		Node getEnd();
 
 };
 
