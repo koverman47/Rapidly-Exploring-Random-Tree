@@ -1,12 +1,10 @@
 #include "headers/RRTController.h"
 
 
-RRTController::RRTController(int sampleSize, double radius, int maxSamples, int xBound, int yBound, double rate) {
+RRTController::RRTController(ConfigurationSpace space, int sampleSize, double radius, double rate) {
+	this->space = space;
 	this->samples = sampleSize;
 	this->radius = radius;
-	this->epochs = maxSamples; // Is this RRT Controller's responsibility?
-	this->xBound = xBound;
-	this->yBound = yBound;
 	this->rate = rate; // Additive Increase/Multiplicative Decrease - (0,1)
 	this->sampleRatio = (2 * M_PI) / sampleSize;
 }
@@ -14,26 +12,25 @@ RRTController::RRTController(int sampleSize, double radius, int maxSamples, int 
 
 void RRTController::sample() {
 	Node point = qu.pop();
-	bool collision = false;
+	bool isValid = true;
 
 	for(int s = 0; s < this->samples; s++) {
-		x = this->radius * cost(this->sampleRatio * s) + point.getX();
-		y = this->radius * sin(this->sampleRatio * s) + point.getY();
+		x = radius * cos(sampleRatio * s) + point.getX();
+		y = radius * sin(sampleRatio * s) + point.getY();
 
-		if(x >= this->xBound || y >= this-> yBound || x < 0 || y < 0) {
-			this->radius *= this->radiius * this->rate; // The more collisions, the smaller we make the radius;
+		if(space.isValidPoint(point.getX(), point.getY(), x, y)) {
+			qu.push(new Node(x, y))
 		}
-
-		qu.push(new Node(x, y));
+		else {
+			isValid = false;
+		}
 	}
-	if(!collision) {
-		this->radius += this->radius * this->rate;
+	if(isValid) {
+		radius += radius * rate;
 	}
-}
-
-
-Node RRTController::getNext() {
-	return this->qu.front;
+	else {
+		radius *= radius * rate;
+	}
 }
 
 

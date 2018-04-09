@@ -2,24 +2,19 @@
 #define RRTController_H
 
 #include <cmath>
-
-#include "Edge.h"
+#include "ConfigurationSpace.h"
 #include "Node.h"
-#include "Graph.h"
 
 
 class RRTController {
 
-	private:
+	protected:
 		std::queue qu;
-		Graph graph;
 	public:
-		RRTController(int sampleSize = 8, double radius=3, int maxSamples=100, int xBound, int yBound);
+		RRTController(ConfigurationSpace space, int sampleSize=8, double radius=3, double rate=0.3);
 		~RRTController();
 
 		void sample(); // Compute s samples, Push to queue
-		Node getNext();
-
 };
 
 
