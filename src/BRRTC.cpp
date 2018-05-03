@@ -1,71 +1,68 @@
 #include "headers/BRRTC.h"
+#include <cstdlib>
 
 
-//TODO: Pass arguments to super class
-BRRTC::BRRTC() {
-	this->point;
+BRRTC::BRRTC(ConfigurationSpace space, Node start, Node target, int sampleSize, double radius, double rate, double leniency) : RRTController(space, start, sampleSize, radius, rate) {
+	this->idGen = 2;
+	this->target = target;
+	backtrack.push(start);
+	g.insertNode(start);
+	g.insertNode(target);
 }
-
-//TODO: Fix this up
-void BRRTC::sample() {
-	bool collision = false;
-
-	for(int s = 0; s < samples; s++) {
-		x = radius * cos(sampleRatio * s) + point.getX();
-		y = radius * sin(sampleRatio * s) + ->point.getY();
-
-		if(x >= xBound || y >= yBound || x < 0 || y < 0) {
-			radius *= radius * rate;
-			collision = true;
-		}
-	}
-	if(!collision) {
-		radius += radius * rate;
-	}
-}
-
 
 void BRRTC::sample() {
 	bool isValid = true;
 	vector<double> distanceList;
 	vector<Node> sampleList;
+    printf("Radius: %f\n", radius);
 
 	for(int s = 0; s < samples; s++) {
-		x = radius * cos(sampleRatio * s) + point.getX();
-		y = radius * sin(sampleRatio * s) + point.getY();
+		double x = radius * cos(sampleRatio * s) + point.getX();
+		double y = radius * sin(sampleRatio * s) + point.getY();
 
-		if(space.isValidPoiint(point.getX(), point.getY(), x, y)) {
-			Node n = new Node(x, y);
+		Node n = Node(idGen++, x, y);
+		if(space.isValidPoint(point, n)) {
 			sampleList.push_back(n);
-			distanceList.push_back(distance(n, destination));
+			distanceList.push_back(distance(n, target)); // Distance function from super class
 		}
 		else {
 			isValid = false;
 		}
 	}
-	point = sampleList[min(distanceList)];
-	if(isValid) {
-		radius += radius * rate;
+	int minIndex = min(distanceList);
+	Node temp;
+	if(distanceList[minIndex] > (distance(backtrack.top(), target) + leniency * radius)) {
+		temp = backtrack.top();
+		backtrack.pop();
 	}
 	else {
-		radius *= radius * rate;
+		temp = sampleList[min(distanceList)];
+		for(int i = 0; i < sampleList.size(); i++) {
+			if(i != minIndex) {
+				backtrack.push(sampleList[i]);
+			}
+		}
+	}
+	g.insertNode(temp);
+	g.insertEdge(Edge(idGen++, point, temp, distance(point, temp)));
+	point = temp;
+	if(isValid) {
+		radius += radius * rate;
+        radius > 5 ? radius = 5 : true; // c++ requires shorthand else?
+	}
+	else {
+        radius = radius * rate;
+        radius < 0.1 ? radius = 0.1 : true;
+        
 	}
 }
 
-
-double BRRTC::distance(vector<double> a, vector<double> b) {
-	double sum = 0;
-	for(int i = 0; i < a.size(); i++) { // Assuming a, b are the same size
-		sum += pow(a[i] - b[i], 2);
-	}
-	return sqrt(sum);
-}
 
 // Useless because we can keep track as we calculate the distances
-int BBRTC::min(vector<double> toMin) {
+int BRRTC::min(vector<double> toMin) {
 	int index = 0;
 	for(int i = 1; i < toMin.size(); i++) {
-		if(toMin[index] < toMin[i]) {
+		if(toMin[i] < toMin[index]) {
 			index = i;
 		}
 	}

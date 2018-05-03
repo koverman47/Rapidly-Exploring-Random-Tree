@@ -3,6 +3,9 @@
 
 #include "RRTController.h"
 #include <vector>
+#include <stack>
+#include "Node.h"
+#include "ConfigurationSpace.h"
 
 // Biased Rapidly-Exploring Random Tree
 // We bias towards an end target
@@ -11,15 +14,17 @@ class BRRTC : public RRTController {
 
 	private:
 		Node point;
-		Node destination;
-		double distance(Node u, Node v); // Euclidean
-		int min(vector<Node> toMin);
+		Node target;
+		double leniency;
+		std::stack<Node> backtrack;
+
+		int min(vector<double> toMin);
 	public:
-		BRRTC();
+		//BRRTC() : RRTController();
+		BRRTC(ConfigurationSpace space, Node start, Node target, int sampleSize=8, double radius=3, double rate=0.5, double leniency=0.5);
 		~BRRTC();
 
-		void sample();
-}
-
+		virtual void sample();
+};
 
 #endif

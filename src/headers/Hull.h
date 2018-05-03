@@ -1,21 +1,25 @@
 #ifndef Hull_H
-#define Hull_h
+#define Hull_H
 
 #include <cmath>
 #include <vector>
 #include "Node.h"
+
+using namespace std;
+
 
 class Hull {
 
 	private:
 		vector<Node> points;
 	public:
-		Hull();
+		Hull(vector<Node> points);
 		~Hull();
 
 		vector<Node> getPoints();
-		bool doesIntersect(double xs, double ys, double xt, double yt);
+		bool doesIntersect(Node s, Node t);
+		double determinant(Node a, Node b, Node c);
 
 };
 
-#endif Hull_H
+#endif

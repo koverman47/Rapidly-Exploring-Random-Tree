@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "Hull.h"
+#include "Node.h"
 
 
 class ConfigurationSpace {
@@ -13,9 +14,10 @@ class ConfigurationSpace {
 		int yBound;
 	public:
 		ConfigurationSpace(vector<Hull> obstacles, int x=640, int y=480);
+		ConfigurationSpace();
 		~ConfigurationSpace();
 		
-		bool isValidPoint(double xs, double ys, double xt, double yt);
+		bool isValidPoint(Node s, Node t);
 
 };
 

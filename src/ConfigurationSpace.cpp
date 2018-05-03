@@ -1,6 +1,9 @@
 #include "headers/ConfigurationSpace.h"
 
 
+ConfigurationSpace::ConfigurationSpace() {}
+
+
 ConfigurationSpace::ConfigurationSpace(vector<Hull> obstacles, int x, int y) {
 	this->obstacles = obstacles;
 	this->xBound = x;
@@ -9,12 +12,12 @@ ConfigurationSpace::ConfigurationSpace(vector<Hull> obstacles, int x, int y) {
 
 
 // s for source, t for sink
-bool isValidPoint(double xs, double ys, double xt, double yt) {
-	if(xt > xBound || yt > yBound || xt < 0 || yt < 0) {
+bool ConfigurationSpace::isValidPoint(Node s, Node t) {
+	if(t.getX() > xBound || t.getY() > yBound || t.getX() < 0 || t.getY() < 0) {
 		return false;
 	}
-	for(hull : obstacles) {
-		if(hull.doesIntersect(xs, ys, xt, yt)) {
+	for(Hull hull : obstacles) {
+		if(hull.doesIntersect(s, t)) {
 			return false;
 		}
 	}
@@ -22,4 +25,4 @@ bool isValidPoint(double xs, double ys, double xt, double yt) {
 }
 
 
-~ConfigurationSpace::ConfigurationSpace() {}
+ConfigurationSpace::~ConfigurationSpace() {}

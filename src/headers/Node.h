@@ -18,13 +18,16 @@ class Node {
 	private:
 			double x; // These coordinates should not be changed after they are first set.
 			double y;
+			int id;
 	public:
 			// Internal Value checking - the RRTController should protect against out of bounds coordinates
-			Node(double x = -1, double y = -1); // Default to generic invalid coordinates if given nothing
+			Node(int id, double x = -1, double y = -1); // Default to generic invalid coordinates if given nothing
+			Node();
 			~Node();
 
 			double getX();
 			double getY();			
+			int getID();
 };
 
 

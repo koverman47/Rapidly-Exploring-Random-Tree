@@ -1,21 +1,32 @@
 #include "headers/Node.h"
 
 
-Node::Node(double x, double y) {
+Node::Node() {}
+
+
+Node::Node(int id, double x, double y) {
 	if(x == -1 || y == -1) {
 		// Error
 	}
 	this->x = x;
 	this->y = y;
+	this->id = id;
 }
 
 
 double Node::getX() {
-	return this->x;
+	return x;
 }
 
+
 double Node::getY() {
-	return this->y;
+	return y;
 }
+
+
+int Node::getID() {
+	return id;
+}
+
 
 Node::~Node() {}
