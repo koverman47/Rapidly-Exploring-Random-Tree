@@ -39,7 +39,7 @@ int main() {
 	ConfigurationSpace space = ConfigurationSpace(hulls, 640, 480);
 	// (Configuration Space, samples, radius, rate)
 	//RRTController rrt = RRTController(space, Node(0, 0, 0), 8, 1, 0.5);
-	BRRTC rrt = BRRTC(space, Node(0, 0, 0), Node(1, 200, 200), 8, 1, 0.5);
+	BRRTC rrt = BRRTC(space, Node(0, 0, 0), Node(1, 200, 200), 16, 1, 0.5);
 
 	for(int i = 0; i < epochs; i++) {
 		cout << "Epoch Number: " << i << endl;
@@ -56,16 +56,6 @@ int main() {
 	file << "{(80,100),(100,100)}" << endl;
 	file << "{(100,100),(100,80)}" << endl;
 	file << "{(100,80),(80,80)}" << endl; 
-	/*file << "{(50,70),(60,75)}" << endl;
-	file << "{(60,75),(70,78)}" << endl;
-	file << "{(70,78),(75,80)}" << endl;
-	file << "{(75,80),(75,70)}" << endl;
-	file << "{(75,70),(100,100)}" << endl;
-	//file << "{(70,64),(65,60)}" << endl;
-	//file << "{(65,60),(60,55)}" << endl;
-	//file << "{(60,55),(50,50)}" << endl;
-	//file << "{(50,50),(100,100)}" << endl;
-	file << "{(100,100),(50,70)}" << endl;*/
 	file.close();
 
 }
