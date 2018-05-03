@@ -18,23 +18,23 @@ int main() {
 	//ConfigurationSpace space = ConfigurationSpace(rsg.getObstacles(), rsg.getWidth(), rsg.getHeight());
 	
 	vector<Node> h1;
+	vector<Node> h2;
+	/* Square */
 	h1.push_back(Node(0, 80, 80));
 	h1.push_back(Node(0, 80, 100));
 	h1.push_back(Node(0, 100, 100));
 	h1.push_back(Node(0, 100, 80));
-	/*h1.push_back(Node(0, 50, 70));
-	h1.push_back(Node(0, 60, 75));
-	h1.push_back(Node(0, 70, 78));
-	h1.push_back(Node(0, 75, 80));
-	h1.push_back(Node(0, 75, 70));
-	//h1.push_back(Node(0, 70, 64));
-	//h1.push_back(Node(0, 65, 60));
-	//h1.push_back(Node(0, 60, 55));
-	//h1.push_back(Node(0, 50, 50));	
-	h1.push_back(Node(0, 100, 100));*/
-	Hull hull = Hull(h1);
+
+	h2.push_back(Node(0, 100, 80));
+	h2.push_back(Node(0, 100, 50));
+	h2.push_back(Node(0, 150, 50));
+	h2.push_back(Node(0, 150, 80));
+
+	Hull hull1 = Hull(h1);
+	Hull hull2 = Hull(h2);
 	vector<Hull> hulls;
-	hulls.push_back(hull);
+	hulls.push_back(hull1);
+	hulls.push_back(hull2);
 
 	ConfigurationSpace space = ConfigurationSpace(hulls, 640, 480);
 	// (Configuration Space, samples, radius, rate)
@@ -51,11 +51,18 @@ int main() {
 	}*/
 	rrt.getGraph().writeToFile("see.txt");
 	ofstream file;
-	file.open("see.txt", fstream::app);
+	file.open("obstacles.txt", fstream::app);
+	
 	file << "{(80,80),(80,100)}" << endl;
 	file << "{(80,100),(100,100)}" << endl;
 	file << "{(100,100),(100,80)}" << endl;
 	file << "{(100,80),(80,80)}" << endl; 
+
+	file << "{(100,80),(100,50)}" << endl;
+	file << "{(100,50),(150,50)}" << endl;
+	file << "{(150,50),(150,80)}" << endl;
+	file << "{(150,80),(100,80)}" << endl;
+
 	file.close();
 
 }
